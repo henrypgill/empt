@@ -1,0 +1,30 @@
+name: CI
+
+on:
+    push:
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "23.3.0" # Use 'lts' for the latest LTS version or '16' for a specific version
+
+            - name: Install modules
+              run: yarn
+            - name: Check formatting with Prettier
+              run: yarn format:check
+            - name: Check quality with ESLint
+              run: yarn lint
+            - name: Check types compile
+              run: yarn type-check
+            # - name: Check tests pass
+            #   run: yarn test
+            - name: Check app builds
+              run: yarn build
